@@ -45,13 +45,24 @@ def create_student():
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
             return {"error": "Email address already in use"}, 409 # Conflict
         elif err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
-            return {"error": "Field is required"}, 400
+            return {"error": str(err.orig)}, 400
         else:
-            return {"error": err._message()}, 400
+            return {"error": err.orig.diag.message_detail}, 400
 
 
 # Update - PUT /students/<int:id>
 # Delete - DELETE /students/<int:id>
+@students_bp.route('/students/<int:student_id>', methods=['DELETE'])
+def delete_student(student_id):
+    stmt = db.select(Student).filter_by(id=student_id)
+    student = db.session.scalar(stmt)
+    if student:
+        db.session.delete(student)
+        db.session.commit()
+        return {}, 204
+    else:
+        return {'error': f'Student with id {student_id} does not exist'}, 404 
+   
 
 # Possible extra routes:
 # Enrol - POST /students/<int:student_id>/<int:course_id>
