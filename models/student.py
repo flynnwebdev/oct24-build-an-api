@@ -17,3 +17,5 @@ class StudentSchema(ma.Schema):
 
 one_student = StudentSchema()
 many_students = StudentSchema(many=True)
+
+student_without_id = StudentSchema(exclude=['id'])
