@@ -1,4 +1,5 @@
 from flask import Flask
+from marshmallow.exceptions import ValidationError
 from init import db, ma
 import os
 from blueprints.db_bp import db_bp
@@ -13,6 +14,10 @@ def create_app():
 
     db.init_app(app)
     ma.init_app(app)
+
+    @app.errorhandler(ValidationError)
+    def validation_error(err):
+        return {"error": err.messages}, 400
 
     app.register_blueprint(db_bp)
     app.register_blueprint(students_bp)

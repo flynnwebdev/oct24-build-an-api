@@ -1,5 +1,7 @@
 from init import db, ma
 from marshmallow_sqlalchemy import fields
+from marshmallow.fields import String
+from marshmallow.validate import Length, Regexp, And
 
 class Course(db.Model):
     __tablename__ = 'courses'
@@ -15,6 +17,11 @@ class Course(db.Model):
 
 
 class CourseSchema(ma.Schema):
+    name = String(required=True, validate=And(
+        Length(min=5, error='Name must be at least 5 characters long'),
+        Regexp('^[A-Za-z0-9 ()]$', error='Only letters, numbers, spaces and parentheses allowed')
+    ))
+
     teacher = fields.Nested('TeacherSchema')
 
     class Meta:
