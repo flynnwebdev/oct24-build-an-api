@@ -11,7 +11,7 @@ class Course(db.Model):
     end_date = db.Column(db.Date)
 
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    teacher = db.relationship('Teacher')
+    teacher = db.relationship('Teacher', back_populates='courses')
 
 
 class CourseSchema(ma.Schema):
