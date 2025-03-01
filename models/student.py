@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow.fields import Email
 
 class Student(db.Model):
     __tablename__ = 'students'
@@ -11,6 +12,8 @@ class Student(db.Model):
 
 
 class StudentSchema(ma.Schema):
+    email = Email(required=True)
+
     class Meta:
         fields = ('id', 'name', 'email', 'address')
 
