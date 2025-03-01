@@ -1,6 +1,6 @@
 from init import db, ma
 from marshmallow_sqlalchemy import fields
-from marshmallow.fields import String
+from marshmallow.fields import String, Date
 from marshmallow.validate import Length, Regexp, And
 
 class Course(db.Model):
